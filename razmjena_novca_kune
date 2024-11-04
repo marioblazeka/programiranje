@@ -1,30 +1,26 @@
-// Online C++ compiler to run C++ program online
 #include <iostream>
-//#include <cstring>
 using namespace std;
 
 int main() {
-    int N, A[10];
-    A[0]=1000;A[1]=500;A[2]=200;A[3]=100;A[4]=50;A[5]=20;A[6]=10;A[7]=5;A[8]=2;A[9]=1;
+    int N, A[10] = {1000, 500, 200, 100, 50, 20, 10, 5, 2, 1}; // Inicializacija A sa vrednostima
 
-// int N, A[10]={1000,5000,200,100,50,20,10,5,2,1}; drugi način pisanja a može i bez 10 nprA[]
+    do {
+        cout << "N = ";
+        cin >> N;
+    } while (N < 1);
 
-    do{
-        cout<<"N = ";
-        cin>>N;
-        while (N<1);
-        int I=0;
-         while (N>0)
-            int C=0;
-            while (N>=A[I]){
-                C++;
-                N-=A[I];
-            }
-            if (C>0)
-            cout<< C << " x "<< A[I++] << endl;
-        
-
+    int I = 0;
+    while (N > 0 && I < 10) {
+        int C = 0;
+        while (N >= A[I]) {
+            C++;
+            N -= A[I];
+        }
+        if (C > 0) {
+            cout << C << " x " << A[I] << endl;
+        }
+        I++;
     }
+
+    return 0;
 }
-        // system ("pause");
- return 0;
