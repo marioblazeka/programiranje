@@ -1,0 +1,151 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    int A,B;
+    // Write C++ code here
+    cout << "Upisi A " << endl;
+    cin >> A;
+      cout << "Upisi B " << endl;
+    cin >> B;
+    cout << "Rezultat je = " << (float)A/(char)B << endl;
+    cout << "Oktalni rezultat je = " << oct << A << endl;
+   cout << "Hex rezultat je = " << hex << A << endl;
+    system ("pause");
+    return 0;
+}
+
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
+
+int main() {
+    unsigned short A;
+    // Write C++ code here
+    cout << "Upisi A ";
+    cin >> A;
+      
+    cout << "Oktalni rezultat je = " << oct << A << endl;
+   cout << "Hex rezultat je = " << hex << A << endl;
+   
+    system ("pause");
+    return 0;
+}
+
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <cstdlib>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    double A,B,r;
+    // Write C++ code here
+    cout << "Upisi A " << endl;
+    cin >> A;
+      cout << "Upisi B " << endl;
+    cin >> B;
+    
+//    double r;
+    
+r=A/B;
+    cout << setprecision (25) <<"Oktalni rezultat je = " << oct << r << endl;
+   cout << "Hex rezultat je = " << hex << r << endl;
+   cout << "rezultat * 2 = " << r*2 << endl;
+   
+    system ("pause");
+    return 0;
+}
+
+// Online C++ compiler to run C++ program online
+#include <iostream>
+using namespace std;
+
+
+int main() {
+
+unsigned int a,b,c,d; 
+ 
+cout << "Upisi troznamenkasti broj:";
+cin>>a;
+
+if (a>=100 && a<=999){
+b=a%10;
+c=a/100;
+d=(a/10)%10;
+
+cout<<b<<endl;
+cout<<c<<endl;
+cout<<d<<endl;
+
+if (b+c==d){
+    cout<<"da"<<endl;
+}
+    else{
+    cout<<"ne"<<endl;
+}
+}
+else cout<<"nije 3 znam"<<endl;
+    return 0;
+}
+
+// Online C++ compiler to run C++ program online
+#include <iostream>
+using namespace std;
+
+// int i=1;
+int main() {
+// int i=1;
+for(int i = 1; i < 5; i++) {
+    cout<<i;
+    cout<<" Hello World!"<<endl;
+}
+cout <<"Kraj"<<endl;
+
+
+
+// system("pause");
+  return 0;
+}
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    float Ax, Bx, Ay, By, PAx, PAy, PBx, PBy;
+
+    // Prva petlja koja osigurava valjane koordinate PA i PB
+    do {
+        cout << "Upisi Ax Ay Bx By: ";
+        cin >> PAx >> PAy >> PBx >> PBy;
+    } while (PAx > PBx || PAy > PBy);
+
+    // Vanjska petlja koja provodi operacije s Ax, Bx, Ay i By
+    do {
+        // Unos koordinata Ax, Ay, Bx, By
+        do {
+            cout << "Upisi Ax Ay Bx By: ";
+            cin >> Ax >> Ay >> Bx >> By;
+        } while (Ax > Bx || Ay > By);
+
+        // Provjera uvjeta za ažuriranje PA i PB
+        if (!(Ax == Bx && Ay == By)) {
+            if (Ax > PAx) PAx = Ax;
+            if (Ay > PAy) PAy = Ay;
+            if (Bx < PBx) PBx = Bx;
+            if (By < PBy) PBy = By;
+        } else {
+            break; // Prekid vanjske petlje ako su koordinatne vrijednosti jednake
+        }
+
+    } while (PAx <= PBx && PAy <= PBy); // Ispravljen uvjet vanjske petlje
+
+    cout << "Konacne vrijednosti: PAx = " << PAx << ", PAy = " << PAy
+         << ", PBx = " << PBx << ", PBy = " << PBy << endl;
+
+    return 0;
+}

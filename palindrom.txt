@@ -1,0 +1,23 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+
+char S[20];
+bool pal = true;
+    cout<<"S= ";
+    cin>>S;
+    int L = strlen (S);
+for(int i=0; i<L/2; i++)
+    if (S[i]!= S[L-i-1])
+    pal = false;
+   
+   if(pal) 
+    cout<<"Palindrom"<<endl;
+    
+    else
+     cout<<"nije"<<endl;
+ return 0;
+}
