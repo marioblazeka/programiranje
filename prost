@@ -34,4 +34,37 @@ Prost!
 
 
 === Code Execution Successful ===
+
+raspon
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a;
+    do {
+        cout << "Upisi broj (2 - 100): ";
+        cin >> a;
+        if (a < 2 || a > 100) {
+            cout << "Krivo upisano! Pokušajte ponovo." << endl;
+        }
+    } while (a < 2 || a > 100);  // Ova petlja osigurava ispravan unos
+
+    bool slozen = false;
+    int i = 2;
+
+    while (!slozen && i <= a / 2) {
+        if (a % i == 0) {
+            slozen = true;
+        }
+        i++;
+    }
+
+    if (!slozen)
+        cout << "Broj je prost!" << endl;
+    else
+        cout << "Broj nije prost!" << endl;
+
+    return 0;
+}
+
 */
