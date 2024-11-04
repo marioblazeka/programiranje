@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int i=2;
+    int a;
+    cout<<"upisi broj : "<<endl;
+    cin>>a;
+    bool slozen=0;
+    while(slozen==0 && i<=a/2){
+        if(a%i==0)
+            slozen=1;
+            i++;
+    }
+if (!slozen)
+cout<<"Prost!"<<endl;
+else
+cout<<"Nije!"<<endl;
+    return 0;
+}
