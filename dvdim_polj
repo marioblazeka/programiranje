@@ -1,0 +1,35 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+//#include <cstring>
+using namespace std;
+
+int main() {
+    int m1,m2,n1,n2;
+    float A[100] [100], B[100] [100], C[100] [100];    
+cout<<"Matrica A: "<<endl;
+do
+cin>> m1 >>n1;
+while ((m1<1||m1>100 ||n1<1||n1>100));
+for (int i=0; i<m1;i++)
+    for (int j=0; j<m1;j++){
+        cout<<"A[ " << i << "," <<j<< "] = ";
+        cin >>A [i][j];
+    }
+ cout<<"Matrica B: "<<endl;
+do
+cin>> m2 >>n2;
+while ((m2<1||m2>100 ||n2<1||n2>100));
+for (int i=0; i<m2;i++)
+    for (int j=0; j<m2;j++){
+        cout<<"B[ " << i << "," <<j<< "] = ";
+        cin >>B [i][j];
+    }
+            if (m1==m2&&n1==n2)
+                for (int i=0;i<m1;i++)
+                    for (int j=0;j<n1;j++)
+                        C[i][j]=A[i][j]+B[i][j];
+            cout<<"A+B= "  <<endl;    
+                for (int i=0;i<m1;i++){
+                    for (int j=0;j<n1;j++)
+                    cout<< C[i][j]<< "  "<<endl;
+                }
