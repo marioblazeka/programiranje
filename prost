@@ -18,3 +18,13 @@ else
 cout<<"Nije!"<<endl;
     return 0;
 }
+
+/*
+
+upisi broj : 
+123
+Nije!
+
+
+=== Code Execution Successful ===
+*/
