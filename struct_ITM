@@ -1,6 +1,4 @@
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
 using namespace std;
 
 int main() {
@@ -10,30 +8,76 @@ int main() {
         int visina;
         int tezina;
     } osobe[50];
+    
+    int N;
+    float SM = 0, SZ = 0;
+    int NZ = 0, NM = 0;
 
-    // Inicijalizacija generatora slučajnih brojeva
-    srand(time(0));
+    // Unos validnog broja osoba
+    do {
+        cout << "N (1 do 50) = ";
+        cin >> N;
+        if (N < 1 || N > 50) {
+            cout << "Krivi upis! Mora biti od 1 do 50." << endl;
+        }
+    } while (N < 1 || N > 50);
 
-    // Generisanje slučajnih podataka za 50 osoba
-    for (int i = 0; i < 50; i++) {
-        // Generisanje imena i prezimena
-        snprintf(osobe[i].preime, 40, "Osoba_%d", i + 1);
+    cout << "Upis za " << N << " osoba." << endl;
 
-        // Nasumično generisanje spola
-        osobe[i].spol = (rand() % 2 == 0) ? 'M' : 'Z';
+    for (int i = 0; i < N; i++) {
+        cout << "Prezime i ime: ";
+        cin.ignore();
+        cin.getline(osobe[i].preime, 40);
 
-        // Nasumično generisanje visine (u centimetrima) i težine (u kilogramima)
-        osobe[i].visina = 150 + rand() % 51;  // Visina između 150 i 200 cm
-        osobe[i].tezina = 50 + rand() % 51;   // Težina između 50 i 100 kg
+        // Unos spola
+        do {
+            cout << "Spol (M/Z): ";
+            osobe[i].spol = cin.get();
+            cin.ignore(); // Ignorišemo novi red nakon unosa spola
+        } while (osobe[i].spol != 'Z' && osobe[i].spol != 'z' && osobe[i].spol != 'M' && osobe[i].spol != 'm');
+
+        cout << "Visina (cm): ";
+        cin >> osobe[i].visina;
+
+        cout << "Težina (kg): ";
+        cin >> osobe[i].tezina;
+
+        // Računanje odnosa težine i visine za žene i muškarce
+        float odnos = (float)osobe[i].tezina / osobe[i].visina;
+        if (osobe[i].spol == 'z' || osobe[i].spol == 'Z') {
+            SZ += odnos;
+            NZ++;
+        } else {
+            SM += odnos;
+            NM++;
+        }
     }
 
-    // Ispis generisanih podataka
-    for (int i = 0; i < 50; i++) {
-        cout << "Prezime i ime: " << osobe[i].preime << endl;
-        cout << "Spol: " << osobe[i].spol << endl;
-        cout << "Visina: " << osobe[i].visina << " cm" << endl;
-        cout << "Težina: " << osobe[i].tezina << " kg" << endl;
-        cout << "--------------------------" << endl;
+    // Prosečan odnos težine i visine za žene i muškarce
+    if (NZ > 0) SZ /= NZ;
+    if (NM > 0) SM /= NM;
+
+    // Ispis prosečnih odnosa
+    cout << "\nProsecan odnos tezine i visine:" << endl;
+    cout << "Zene: " << SZ << endl;
+    cout << "Muskarci: " << SM << endl;
+
+    // Ispis svih osoba sa izracunatim odnosom težine i visine
+    cout << "\nIspis odnosa tezine i visine po osobi:\n";
+    for (int i = 0; i < N; i++) {
+        float odnos = (float)osobe[i].tezina / osobe[i].visina;
+        cout << osobe[i].preime << " "
+             << "Tezina: " << osobe[i].tezina << "kg "
+             << "Visina: " << osobe[i].visina << "cm "
+             << "Odnos: " << odnos << " ";
+
+        // Provera odnosa u odnosu na prosečan za datu grupu
+        if ((osobe[i].spol == 'z' || osobe[i].spol == 'Z') && odnos > SZ) {
+            cout << "(Iznad proseka za žene)";
+        } else if ((osobe[i].spol == 'm' || osobe[i].spol == 'M') && odnos > SM) {
+            cout << "(Iznad proseka za muškarce)";
+        }
+        cout << endl;
     }
 
     return 0;
