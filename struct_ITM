@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 using namespace std;
 
 int main() {
@@ -15,32 +16,56 @@ int main() {
 
     // Unos validnog broja osoba
     do {
-        cout << "N (1 do 50) = ";
+        cout << "Unesite broj osoba (1 do 50): ";
         cin >> N;
         if (N < 1 || N > 50) {
-            cout << "Krivi upis! Mora biti od 1 do 50." << endl;
+            cout << "Greška! Broj osoba mora biti između 1 i 50." << endl;
         }
     } while (N < 1 || N > 50);
 
-    cout << "Upis za " << N << " osoba." << endl;
+    cout << "Upis podataka za " << N << " osoba." << endl;
 
     for (int i = 0; i < N; i++) {
+        // Unos imena
         cout << "Prezime i ime: ";
         cin.ignore();
         cin.getline(osobe[i].preime, 40);
 
-        // Unos spola
+        // Provjera za ime (ako je ostavljeno prazno)
+        if (strlen(osobe[i].preime) == 0) {
+            cout << "Greška! Prezime i ime ne smiju biti prazni." << endl;
+            i--; // Vratimo unos za istu osobu
+            continue;
+        }
+
+        // Unos spola s ograničenjem
         do {
             cout << "Spol (M/Z): ";
             osobe[i].spol = cin.get();
             cin.ignore(); // Ignorišemo novi red nakon unosa spola
+
+            if (osobe[i].spol != 'Z' && osobe[i].spol != 'z' && osobe[i].spol != 'M' && osobe[i].spol != 'm') {
+                cout << "Greška! Unesite 'M' za muškarca ili 'Z' za ženu." << endl;
+            }
         } while (osobe[i].spol != 'Z' && osobe[i].spol != 'z' && osobe[i].spol != 'M' && osobe[i].spol != 'm');
 
-        cout << "Visina (cm): ";
-        cin >> osobe[i].visina;
+        // Unos visine s ograničenjem
+        do {
+            cout << "Visina (u cm, 100 do 250): ";
+            cin >> osobe[i].visina;
+            if (osobe[i].visina < 100 || osobe[i].visina > 250) {
+                cout << "Greška! Visina mora biti između 100 i 250 cm." << endl;
+            }
+        } while (osobe[i].visina < 100 || osobe[i].visina > 250);
 
-        cout << "Težina (kg): ";
-        cin >> osobe[i].tezina;
+        // Unos težine s ograničenjem
+        do {
+            cout << "Težina (u kg, 30 do 200): ";
+            cin >> osobe[i].tezina;
+            if (osobe[i].tezina < 30 || osobe[i].tezina > 200) {
+                cout << "Greška! Težina mora biti između 30 i 200 kg." << endl;
+            }
+        } while (osobe[i].tezina < 30 || osobe[i].tezina > 200);
 
         // Računanje odnosa težine i visine za žene i muškarce
         float odnos = (float)osobe[i].tezina / osobe[i].visina;
@@ -59,16 +84,16 @@ int main() {
 
     // Ispis prosečnih odnosa
     cout << "\nProsecan odnos tezine i visine:" << endl;
-    cout << "Zene: " << SZ << endl;
-    cout << "Muskarci: " << SM << endl;
+    cout << "Žene: " << SZ << endl;
+    cout << "Muškarci: " << SM << endl;
 
-    // Ispis svih osoba sa izracunatim odnosom težine i visine
-    cout << "\nIspis odnosa tezine i visine po osobi:\n";
+    // Ispis svih osoba sa izračunatim odnosom težine i visine
+    cout << "\nIspis odnosa težine i visine po osobi:\n";
     for (int i = 0; i < N; i++) {
         float odnos = (float)osobe[i].tezina / osobe[i].visina;
         cout << osobe[i].preime << " "
-             << "Tezina: " << osobe[i].tezina << "kg "
-             << "Visina: " << osobe[i].visina << "cm "
+             << "Težina: " << osobe[i].tezina << " kg "
+             << "Visina: " << osobe[i].visina << " cm "
              << "Odnos: " << odnos << " ";
 
         // Provera odnosa u odnosu na prosečan za datu grupu
