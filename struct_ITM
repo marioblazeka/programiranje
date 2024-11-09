@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 int main() {
@@ -8,72 +10,31 @@ int main() {
         int visina;
         int tezina;
     } osobe[50];
-    
-    int N;
-    float SM = 0, SZ = 0;
-    int NZ = 0, NM = 0;
 
-    // Unos validnog broja osoba
-    do {
-        cout << "N (1 do 50) = ";
-        cin >> N;
-        if (N < 1 || N > 50) {
-            cout << "Krivi upis! Mora biti od 1 do 50." << endl;
-        }
-    } while (N < 1 || N > 50);
+    // Inicijalizacija generatora slučajnih brojeva
+    srand(time(0));
 
-    cout << "Upis za " << N << " osoba." << endl;
+    // Generisanje slučajnih podataka za 50 osoba
+    for (int i = 0; i < 50; i++) {
+        // Generisanje imena i prezimena
+        snprintf(osobe[i].preime, 40, "Osoba_%d", i + 1);
 
-    for (int i = 0; i < N; i++) {
-        cout << "Prezime i ime: ";
-        cin.ignore();
-        cin.getline(osobe[i].preime, 40);
+        // Nasumično generisanje spola
+        osobe[i].spol = (rand() % 2 == 0) ? 'M' : 'Z';
 
-        // Unos spola
-        do {
-            cout << "Spol (M/Z): ";
-            osobe[i].spol = cin.get();
-            cin.ignore(); // Ignorišemo novi red nakon unosa spola
-        } while (osobe[i].spol != 'Z' && osobe[i].spol != 'z' && osobe[i].spol != 'M' && osobe[i].spol != 'm');
-
-        cout << "Visina (cm): ";
-        cin >> osobe[i].visina;
-
-        cout << "Težina (kg): ";
-        cin >> osobe[i].tezina;
-
-        // Računanje odnosa težine i visine za žene i muškarce
-        if (osobe[i].spol == 'z' || osobe[i].spol == 'Z') {
-            SZ += (float)osobe[i].tezina / osobe[i].visina;
-            NZ++;
-        } else {
-            SM += (float)osobe[i].tezina / osobe[i].visina;
-            NM++;
-        }
+        // Nasumično generisanje visine (u centimetrima) i težine (u kilogramima)
+        osobe[i].visina = 150 + rand() % 51;  // Visina između 150 i 200 cm
+        osobe[i].tezina = 50 + rand() % 51;   // Težina između 50 i 100 kg
     }
 
-    // Prosečan odnos težine i visine za žene i muškarce
-    if (NZ > 0) SZ /= NZ;
-    if (NM > 0) SM /= NM;
-
-    // Ispis osoba sa višim odnosom težine i visine od proseka
-    for (int i = 0; i < N; i++) {
-        bool iznadProseka = (osobe[i].spol == 'z' || osobe[i].spol == 'Z') ?
-                            ((float)osobe[i].tezina / osobe[i].visina > SZ) :
-                            ((float)osobe[i].tezina / osobe[i].visina > SM);
-        if (iznadProseka) {
-            cout << osobe[i].preime << " "
-                 << osobe[i].tezina << " "
-                 << osobe[i].visina << endl;
-        }
+    // Ispis generisanih podataka
+    for (int i = 0; i < 50; i++) {
+        cout << "Prezime i ime: " << osobe[i].preime << endl;
+        cout << "Spol: " << osobe[i].spol << endl;
+        cout << "Visina: " << osobe[i].visina << " cm" << endl;
+        cout << "Težina: " << osobe[i].tezina << " kg" << endl;
+        cout << "--------------------------" << endl;
     }
 
     return 0;
 }
-```
-
-### Objašnjenja:
-- **Provera validnosti `N`** je sada samo unutar `do-while` petlje.
-- **Uslov za unos spola** je ispravljen da traži unos sve dok nije `'Z'`, `'z'`, `'M'` ili `'m'`.
-- **Prosečni odnosi težine i visine** (`SZ` i `SM`) se izračunavaju nakon što su uneti svi podaci.
-- **Ispis osoba** čiji odnos težine i visine premašuje prosek je urađen pomoću **ternarnog operatora**.
