@@ -1,58 +1,79 @@
 #include <iostream>
 using namespace std;
+
 int main() {
- struct mario{
-    char preime[40];
-    char spol;
-    int visina;
-    int tezina;
- } osobe[50];
- int N;
- float SM=0, SZ=0;
- int NZ=0, NM=0;
- do{
-     cout<<"N = ";
-     cin>> N;
- }while (N<1 || N>50);
- 
- if (N<1 || N>50)
- cout<<"Krivi upis mora biti od 1 do 50";
- else
- cout<<"Upis za"<< N <<" osoba.";
- 
- for (int i=0;i<N;i++){
-     cout<<"Prezime i ime: ";
-     cin.ignore();
-     cin.getline(osobe[i].preime,40);
-     do{
-     cout<<"Spol: ";
-     cin.ignore();
-     osobe[i].spol=cin.get();
- }while (osobe[i].spol=='Z'||osobe[i].spol=='z'||osobe[i].spol=='M'||osobe[i].spol=='m');
-                 cout<<"Visina: ";
-                 cin>>osobe[i].visina;
-                     cout<<"Težina: ";
-                     cin>>osobe[i].tezina;
-                     if(osobe[i].spol == 'z'|| osobe[i].spol == 'Z'){
-                         SZ+=((float)osobe[i].tezina/osobe[i].visina);
-                         NZ++;
-                     }
-                     else{
-                         SM+=((float)osobe[i].tezina/osobe[i].visina);
-                         NM++;
-                     }
-                     SZ/=NZ;
-                     SM/=NM;
-                     for(int i=0;i<N;i++)
-// ? ternarni opoerator selekcije mijenja if else
-                     if (osobe[i].spol=='z' ||osobe[i].spol=='Z' ? 
-                     (float)osobe[i].tezina/osobe[i].visina>SZ: 
-                     (float)osobe[i].tezina/osobe[i].visina>SM)
-                     cout   <<osobe[i].preime<<" "
-                            <<osobe[i].tezina<<" "
-                            <<osobe[i].visina<<endl;
-                     
- } 
-// system ("pause");
+    struct Mario {
+        char preime[40];
+        char spol;
+        int visina;
+        int tezina;
+    } osobe[50];
+    
+    int N;
+    float SM = 0, SZ = 0;
+    int NZ = 0, NM = 0;
+
+    // Unos validnog broja osoba
+    do {
+        cout << "N (1 do 50) = ";
+        cin >> N;
+        if (N < 1 || N > 50) {
+            cout << "Krivi upis! Mora biti od 1 do 50." << endl;
+        }
+    } while (N < 1 || N > 50);
+
+    cout << "Upis za " << N << " osoba." << endl;
+
+    for (int i = 0; i < N; i++) {
+        cout << "Prezime i ime: ";
+        cin.ignore();
+        cin.getline(osobe[i].preime, 40);
+
+        // Unos spola
+        do {
+            cout << "Spol (M/Z): ";
+            osobe[i].spol = cin.get();
+            cin.ignore(); // Ignorišemo novi red nakon unosa spola
+        } while (osobe[i].spol != 'Z' && osobe[i].spol != 'z' && osobe[i].spol != 'M' && osobe[i].spol != 'm');
+
+        cout << "Visina (cm): ";
+        cin >> osobe[i].visina;
+
+        cout << "Težina (kg): ";
+        cin >> osobe[i].tezina;
+
+        // Računanje odnosa težine i visine za žene i muškarce
+        if (osobe[i].spol == 'z' || osobe[i].spol == 'Z') {
+            SZ += (float)osobe[i].tezina / osobe[i].visina;
+            NZ++;
+        } else {
+            SM += (float)osobe[i].tezina / osobe[i].visina;
+            NM++;
+        }
+    }
+
+    // Prosečan odnos težine i visine za žene i muškarce
+    if (NZ > 0) SZ /= NZ;
+    if (NM > 0) SM /= NM;
+
+    // Ispis osoba sa višim odnosom težine i visine od proseka
+    for (int i = 0; i < N; i++) {
+        bool iznadProseka = (osobe[i].spol == 'z' || osobe[i].spol == 'Z') ?
+                            ((float)osobe[i].tezina / osobe[i].visina > SZ) :
+                            ((float)osobe[i].tezina / osobe[i].visina > SM);
+        if (iznadProseka) {
+            cout << osobe[i].preime << " "
+                 << osobe[i].tezina << " "
+                 << osobe[i].visina << endl;
+        }
+    }
+
     return 0;
 }
+```
+
+### Objašnjenja:
+- **Provera validnosti `N`** je sada samo unutar `do-while` petlje.
+- **Uslov za unos spola** je ispravljen da traži unos sve dok nije `'Z'`, `'z'`, `'M'` ili `'m'`.
+- **Prosečni odnosi težine i visine** (`SZ` i `SM`) se izračunavaju nakon što su uneti svi podaci.
+- **Ispis osoba** čiji odnos težine i visine premašuje prosek je urađen pomoću **ternarnog operatora**.
