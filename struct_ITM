@@ -1,0 +1,58 @@
+#include <iostream>
+using namespace std;
+int main() {
+ struct mario{
+    char preime[40];
+    char spol;
+    int visina;
+    int tezina;
+ } osobe[50];
+ int N;
+ float SM=0, SZ=0;
+ int NZ=0, NM=0;
+ do{
+     cout<<"N = ";
+     cin>> N;
+ }while (N<1 || N>50);
+ 
+ if (N<1 || N>50)
+ cout<<"Krivi upis mora biti od 1 do 50";
+ else
+ cout<<"Upis za"<< N <<" osoba.";
+ 
+ for (int i=0;i<N;i++){
+     cout<<"Prezime i ime: ";
+     cin.ignore();
+     cin.getline(osobe[i].preime,40);
+     do{
+     cout<<"Spol: ";
+     cin.ignore();
+     osobe[i].spol=cin.get();
+ }while (osobe[i].spol=='Z'||osobe[i].spol=='z'||osobe[i].spol=='M'||osobe[i].spol=='m');
+                 cout<<"Visina: ";
+                 cin>>osobe[i].visina;
+                     cout<<"Težina: ";
+                     cin>>osobe[i].tezina;
+                     if(osobe[i].spol == 'z'|| osobe[i].spol == 'Z'){
+                         SZ+=((float)osobe[i].tezina/osobe[i].visina);
+                         NZ++;
+                     }
+                     else{
+                         SM+=((float)osobe[i].tezina/osobe[i].visina);
+                         NM++;
+                     }
+                     SZ/=NZ;
+                     SM/=NM;
+                     for(int i=0;i<N;i++)
+// ? ternarni opoerator selekcije mijenja if else
+                     if (osobe[i].spol=='z' ||osobe[i].spol=='Z' ? 
+                     (float)osobe[i].tezina/osobe[i].visina>SZ: 
+                     (float)osobe[i].tezina/osobe[i].visina>SM)
+                     cout   <<osobe[i].preime<<" "
+                            <<osobe[i].tezina<<" "
+                            <<osobe[i].visina<<endl;
+                     
+ } 
+// system ("pause");
+    return 0;
+}
