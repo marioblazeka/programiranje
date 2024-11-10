@@ -1,0 +1,85 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    struct auti {
+        char marka[20];
+        char tip[20];
+        int potrosnja;
+        char snaga;
+        int velicina;
+        int cijena;
+    } vozila[5];
+    
+    int N;
+
+    // Unos broja vozila
+    do {
+        cout << "Unesite broj vozila (1 do 5): ";
+        cin >> N;
+        if (N < 1 || N > 5) {
+            cout << "Greška! Broj vozila mora biti između 1 i 5." << endl;
+        }
+    } while (N < 1 || N > 5);
+
+    for (int i = 0; i < N; i++) {
+
+        // Unos marke
+        cout << "Marka: ";
+        cin.ignore();
+        cin.getline(vozila[i].marka, 20);
+
+        // Unos tipa
+        cout << "Tip: ";
+        cin.getline(vozila[i].tip, 20);
+        
+        // Unos potrosnje s ograničenjem
+        do {
+            cout << "Potrosnja (litara na 100 km): ";
+            cin >> vozila[i].potrosnja;
+            if (vozila[i].potrosnja < 3 || vozila[i].potrosnja > 15) {
+                cout << "Greška! Potrosnja mora biti izmedju 3 i 15 litara" << endl;
+            }
+        } while (vozila[i].potrosnja < 3 || vozila[i].potrosnja > 15);
+        
+        // Unos snage s ograničenjem
+        do {
+            cout << "Snaga (W/P): ";
+            cin >> vozila[i].snaga;
+            cin.ignore();
+
+            if (vozila[i].snaga != 'W' && vozila[i].snaga != 'P') {
+                cout << "Greška! Unesite W ili P." << endl;
+            }
+        } while (vozila[i].snaga != 'W' && vozila[i].snaga != 'P');
+
+        // Unos velicine s ograničenjem
+        do {
+            cout << "Velicina (3 do 5 metara): ";
+            cin >> vozila[i].velicina;
+            if (vozila[i].velicina < 3 || vozila[i].velicina > 5) {
+                cout << "Greška! Velicina mora biti izmedju 3 i 5 metara" << endl;
+            }
+        } while (vozila[i].velicina < 3 || vozila[i].velicina > 5);
+        
+        // Unos cijene s ograničenjem
+        do {
+            cout << "Cijena (od 1000 do 5000 eura): ";
+            cin >> vozila[i].cijena;
+            if (vozila[i].cijena < 1000 || vozila[i].cijena > 5000) {
+                cout << "Greška! Cijena mora biti izmedju 1000 i 5000 eura" << endl;
+            }
+        } while (vozila[i].cijena < 1000 || vozila[i].cijena > 5000);
+
+        // Računanje potrošnje
+        float trosi = static_cast<float>(vozila[i].potrosnja) / 100.0f;
+        cout << "Potrosnja po kilometru je: " << trosi << " litara." << endl;
+
+        if (vozila[i].potrosnja <= 5) {
+            cout << "Potrosnja je super, odnosno " << trosi << " litara po kilometru." << endl;
+        } else {
+            cout << "Potrosnja je prevelika, odnosno " << trosi << " litara po kilometru." << endl;
+        }
+    }
+}
