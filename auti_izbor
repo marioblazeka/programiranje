@@ -1,4 +1,7 @@
 #include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 struct automobil {
@@ -12,37 +15,34 @@ struct auti {
     int broj;
 };
 
-int main() {
-    auti A;
-    int N;
-    
-    // Unos broja vozila
-    do {
-        cout << "N = ";
-        cin >> N;
-    } while (N < 1 || N > 100);
-    A.broj = N;
+void generirajVozila(auti &A) {
+    // Generiranje nasumičnih podataka za 25 vozila
+    srand(time(0));  // Inicijalizacija generatora slučajnih brojeva
+    const char* marke[] = {"Opel", "Ford", "Toyota", "BMW", "Audi"};
+    const char* tipovi[] = {"Sedan", "SUV", "Hatchback", "Coupe", "Truck"};
+    A.broj = 25;
 
     for (int i = 0; i < A.broj; i++) {
-        cout << "Marka vozila: ";
-        cin.ignore();
-        cin.getline(A.vozilo[i].marka, 20);
-        
-        cout << "Tip vozila: ";
-        cin.getline(A.vozilo[i].tip, 20);
-        
-        cout << "Potrosnja (l/100 km): ";
-        cin >> A.vozilo[i].potrosnja;
-        
-        cout << "Snaga vozila (u kW): ";
-        cin >> A.vozilo[i].snaga;
-        
-        cout << "Velicina vozila (u metrima): ";
-        cin >> A.vozilo[i].velicina;
-        
-        cout << "Cijena vozila (u eurima): ";
-        cin >> A.vozilo[i].cijena;
+        strcpy(A.vozilo[i].marka, marke[rand() % 5]);
+        strcpy(A.vozilo[i].tip, tipovi[rand() % 5]);
+
+        if (i < 6) { // Prvih 6 vozila zadovoljavaju kriterije
+            A.vozilo[i].potrosnja = 5 + static_cast<float>(rand() % 3); // 5-7 l/100 km
+            A.vozilo[i].snaga = 80 + rand() % 21;                        // 80-100 kW
+            A.vozilo[i].velicina = 4;                                    // 4 m
+            A.vozilo[i].cijena = 3000 + rand() % 1001;                   // 3000-4000 eura
+        } else { // Ostala vozila ne zadovoljavaju kriterije
+            A.vozilo[i].potrosnja = 10 + static_cast<float>(rand() % 6); // 10-15 l/100 km
+            A.vozilo[i].snaga = 120 + rand() % 81;                       // 120-200 kW
+            A.vozilo[i].velicina = 5 + rand() % 2;                       // 5-6 m
+            A.vozilo[i].cijena = 4000 + rand() % 2001;                   // 4000-6000 eura
+        }
     }
+}
+
+int main() {
+    auti A;
+    generirajVozila(A);
 
     int snaga, velicina, cijena;
     float potrosnja;
@@ -54,16 +54,17 @@ int main() {
 
     // Unos kriterija za filtriranje
     while (true) {
-        cout << "Potrosnja (0 za kraj): ";
+        cout << "Unesite kriterije za filtriranje (0 za kraj):\n";
+        cout << "Potrosnja (l/100 km): ";
         cin >> potrosnja;
         
-        cout << "Snaga (0 za kraj): ";
+        cout << "Snaga (kW): ";
         cin >> snaga;
         
-        cout << "Velicina motora (0 za kraj): ";
+        cout << "Velicina (m): ";
         cin >> velicina;
         
-        cout << "Cijena (0 za kraj): ";
+        cout << "Cijena (eura): ";
         cin >> cijena;
         
         if (potrosnja == 0 && snaga == 0 && velicina == 0 && cijena == 0)
@@ -71,27 +72,38 @@ int main() {
 
         // Filtriranje vozila prema zadanim kriterijima
         for (int i = 0; i < A.broj; i++) {
+            bool zadovoljava = true;
+            
             if (potrosnja > 0 && A.vozilo[i].potrosnja > potrosnja)
-                izbor[i] = false;
+                zadovoljava = false;
             if (snaga > 0 && A.vozilo[i].snaga > snaga)
-                izbor[i] = false;
+                zadovoljava = false;
             if (velicina > 0 && A.vozilo[i].velicina > velicina)
-                izbor[i] = false;
+                zadovoljava = false;
             if (cijena > 0 && A.vozilo[i].cijena > cijena)
-                izbor[i] = false;
+                zadovoljava = false;
+
+            izbor[i] = izbor[i] && zadovoljava; // Zadrži prethodne uvjete
         }
     }
 
     // Ispis filtriranih vozila
+    cout << "\nFiltrirani rezultati:\n";
+    bool ispisano = false;
     for (int i = 0; i < A.broj; i++) {
         if (izbor[i]) {
             cout << "Marka: " << A.vozilo[i].marka
                  << ", Tip: " << A.vozilo[i].tip
-                 << ", Potrosnja: " << A.vozilo[i].potrosnja
-                 << ", Snaga: " << A.vozilo[i].snaga
-                 << ", Velicina: " << A.vozilo[i].velicina
+                 << ", Potrosnja: " << A.vozilo[i].potrosnja << " l/100 km"
+                 << ", Snaga: " << A.vozilo[i].snaga << " kW"
+                 << ", Velicina: " << A.vozilo[i].velicina << " m"
                  << ", Cijena: " << A.vozilo[i].cijena << " eura" << endl;
+            ispisano = true;
         }
+    }
+
+    if (!ispisano) {
+        cout << "Nema vozila koja zadovoljavaju kriterije." << endl;
     }
 
     return 0;
