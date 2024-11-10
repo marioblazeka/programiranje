@@ -1,0 +1,70 @@
+#include <iostream>
+using namespace std;
+
+struct automobil {
+        char marka[20], tip[20];
+        float potrosnja;
+        int snaga, velicina, cijena;
+    }; 
+struct auti{
+        automobil vozilo[100];
+        int broj;
+    };
+int main(){
+    auti A;
+    
+int N;
+do{
+    cout<<"N = ";
+    cin>>N;
+}while (N<1 || N>100);
+A.broj=N;
+for (int i=0; i<A.broj; i++){
+    cout<<"Marka vozila: ";
+    cin.ignore();
+    cin.getline(A.vozilo[i].marka,20);
+    cout<<"Tip vozila: ";
+    cin.getline(A.vozilo[i].tip,20);
+    cout<<"Potrosnja: ";
+    cin.getline(A.vozilo[i].potrosnja);
+      cout<<"Snaga vozila: ";
+    cin.getline(A.vozilo[i].snaga);
+      cout<<"Velicina motora: ";
+    cin.getline(A.vozilo[i].velicina);
+      cout<<"Cijena: ";
+    cin.getline(A.vozilo[i].cijena);
+};
+
+int snaga, velicina,cijena;
+float potrosnja;
+bool izbor[100];
+while(true){
+ cout<<"Potrosnja: ";
+    cin>>potrosnja;
+    cout<<"Snaga: ";
+    cin>>snaga;
+    cout<<"Velicina motora: ";
+    cin>>velicina;
+    cout<<"Cijena: ";
+    cin>>cijena;
+    if(potrosnja == 0 && snaga == 0 && velicina == 0 && cijena == 0)
+    break;
+}
+for (int i=0; i<A.broj; i++)
+izbor[i]= true;
+
+for (int i=0; i< A.broj; i++){
+   if (potrosnja > 0 && A.vozilo[i].potrosnja > potrosnja)
+   izbor[i]= false;
+   if (snaga > 0 && A.vozilo[i].snaga > snaga)
+   izbor[i]= false;
+   if (velicina > 0 && A.vozilo[i].velicina > velicina)
+   izbor[i]= false;
+   if (cijena > 0 && A.vozilo[i].cijena > cijena)
+   izbor[i]= false;
+}
+for (int i=0; i< A.broj; i++)
+   if (izbor[i]){
+       cout<<A.vozilo[i].marka<<" " <<A.vozilo[i].tip<<" " <<A.vozilo[i].potrosnja<<" "<<A.vozilo[i].velicina<<" "<<A.vozilo[i].cijena<<endl;   
+
+}
