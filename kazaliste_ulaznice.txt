@@ -1,0 +1,229 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+const int MAX_ULAZNICA = 150;
+
+struct Ulaznica {
+    int brojRacuna = 0;
+    int brojSjedala = 0;
+    bool rezervirano = false;
+    bool prodano = false;
+    float cijena = 0.0;
+    string oib = "";
+};
+
+Ulaznica ulaznice[MAX_ULAZNICA];
+int sljedeciRacun = 1;
+
+// --------- VALIDACIJA OIB-a ---------
+bool ValidanOIB(const string& oib) {
+    if (oib.length() != 11) return false;
+    for (char c : oib) {
+        if (!isdigit(c)) return false;
+    }
+    return true;
+}
+
+// --------- CIJENA PO ZONI ---------
+float DohvatiCijenu(int brojSjedala) {
+    if (brojSjedala >= 1 && brojSjedala <= 100) return 15.0;
+    if (brojSjedala >= 101 && brojSjedala <= 140) return 17.5;
+    if (brojSjedala >= 141 && brojSjedala <= 150) return 20.0;
+    return 0.0;
+}
+
+// --------- PRODAJA ULAZNICE ---------
+void ProdajaUlaznice() {
+    for (int i = 0; i < MAX_ULAZNICA; i++) {
+        if (!ulaznice[i].prodano && !ulaznice[i].rezervirano) {
+            string oib;
+            cout << "Unesite OIB (11 znamenki): ";
+            cin >> oib;
+
+            if (!ValidanOIB(oib)) {
+                cout << "Neispravan OIB! Mora sadržavati točno 11 znamenki." << endl;
+                return;
+            }
+
+            ulaznice[i].oib = oib;
+            ulaznice[i].brojRacuna = sljedeciRacun++;
+            ulaznice[i].brojSjedala = i + 1;
+            ulaznice[i].cijena = DohvatiCijenu(i + 1);
+            ulaznice[i].prodano = true;
+
+            cout << "Prodana je ulaznica " << ulaznice[i].brojRacuna
+                 << " sa sjedalom " << ulaznice[i].brojSjedala << "." << endl;
+            return;
+        }
+    }
+    cout << "Predstava je rasprodana!" << endl;
+}
+
+// --------- REZERVACIJA ---------
+void RezervacijaUlaznice() {
+    int izbor;
+    cout << "\n1. Rezervacija numeriranog sjedala\n2. Izmjena podataka o rezervaciji\nIzbor: ";
+    cin >> izbor;
+
+    if (izbor == 1) {
+        bool slobodno = false;
+        cout << "Slobodna sjedala: ";
+        for (int i = 0; i < MAX_ULAZNICA; i++) {
+            if (!ulaznice[i].prodano && !ulaznice[i].rezervirano) {
+                cout << i + 1 << " ";
+                slobodno = true;
+            }
+        }
+        cout << endl;
+
+        if (!slobodno) {
+            cout << "Predstava je rasprodana!" << endl;
+            return;
+        }
+
+        int sjedalo;
+        cout << "Unesite broj sjedala za rezervaciju: ";
+        cin >> sjedalo;
+
+        if (sjedalo < 1 || sjedalo > MAX_ULAZNICA ||
+            ulaznice[sjedalo - 1].prodano || ulaznice[sjedalo - 1].rezervirano) {
+            cout << "Mjesto nije dostupno!" << endl;
+            return;
+        }
+
+        string oib;
+        cout << "Unesite OIB (11 znamenki): ";
+        cin >> oib;
+
+        if (!ValidanOIB(oib)) {
+            cout << "Neispravan OIB! Mora sadržavati točno 11 znamenki." << endl;
+            return;
+        }
+
+        ulaznice[sjedalo - 1].oib = oib;
+        ulaznice[sjedalo - 1].rezervirano = true;
+        ulaznice[sjedalo - 1].brojSjedala = sjedalo;
+        ulaznice[sjedalo - 1].cijena = DohvatiCijenu(sjedalo);
+        cout << "Rezervacija realizirana!" << endl;
+
+    } else if (izbor == 2) {
+        int sjedalo;
+        cout << "Unesite broj sjedala za izmjenu: ";
+        cin >> sjedalo;
+
+        if (sjedalo < 1 || sjedalo > MAX_ULAZNICA) {
+            cout << "Nepostojeće sjedalo!" << endl;
+            return;
+        }
+
+        if (ulaznice[sjedalo - 1].prodano) {
+            cout << "Ulaznica za dotično sjedalo je prodana, izmjena nije moguća!" << endl;
+        } else {
+            ulaznice[sjedalo - 1].rezervirano = false;
+            ulaznice[sjedalo - 1].oib = "";
+            cout << "Izmjena rezervacije realizirana!" << endl;
+        }
+    }
+}
+
+// --------- PRODAJA REZERVIRANE ---------
+void ProdajaRezervirane() {
+    int sjedalo;
+    cout << "Unesite broj sjedala s rezervacijom: ";
+    cin >> sjedalo;
+
+    if (sjedalo < 1 || sjedalo > MAX_ULAZNICA) {
+        cout << "Nepostojeće sjedalo!" << endl;
+        return;
+    }
+
+    if (!ulaznice[sjedalo - 1].rezervirano || ulaznice[sjedalo - 1].prodano) {
+        cout << "Rezervacija ne postoji za sjedalo " << sjedalo << "!" << endl;
+        return;
+    }
+
+    ulaznice[sjedalo - 1].brojRacuna = sljedeciRacun++;
+    ulaznice[sjedalo - 1].prodano = true;
+
+    cout << "Prodana je ulaznica " << ulaznice[sjedalo - 1].brojRacuna
+         << " sa sjedalom " << sjedalo << "." << endl;
+}
+
+// --------- ISPIS ---------
+void IspisProdanih() {
+    int ukupnoProdano = 0;
+    float ukupnaZarada = 0.0;
+    int parter = 0, terasa = 0, vip = 0;
+
+    for (int i = 0; i < MAX_ULAZNICA; i++) {
+        if (ulaznice[i].prodano) {
+            ukupnoProdano++;
+            ukupnaZarada += ulaznice[i].cijena;
+            if (i < 100) parter++;
+            else if (i < 140) terasa++;
+            else vip++;
+        }
+    }
+
+    cout << "Količina prodanih karata: " << ukupnoProdano << endl;
+    cout << "Ukupno inkasirana sredstva: " << ukupnaZarada << " €" << endl;
+    cout << "Parter rasprodan: " << (parter * 100 / 100) << "%" << endl;
+    cout << "Terasa rasprodan: " << (terasa * 100 / 40) << "%" << endl;
+    cout << "VIP loža rasprodan: " << (vip * 100 / 10) << "%" << endl;
+}
+
+// --------- IZVOZ ---------
+void IzvozPodataka() {
+    ofstream datoteka("Izvoz.txt");
+    if (!datoteka) {
+        cout << "Greška pri otvaranju datoteke!" << endl;
+        return;
+    }
+
+    datoteka << "Br.ulaznice Sjedalo Cijena OIB\n";
+    for (int i = 0; i < MAX_ULAZNICA; i++) {
+        if (ulaznice[i].prodano) {
+            datoteka << ulaznice[i].brojRacuna << " "
+                     << ulaznice[i].brojSjedala << " "
+                     << ulaznice[i].cijena << " "
+                     << ulaznice[i].oib << "\n";
+        }
+    }
+
+    datoteka.close();
+    cout << "Izvoz podataka u datoteku realiziran!" << endl;
+}
+
+// --------- IZBORNIK ---------
+void GlavniIzbornik() {
+    int izbor;
+    do {
+        cout << "\n--- Glavni izbornik ---\n";
+        cout << "1. Prodaja ulaznice\n";
+        cout << "2. Rezervacija ulaznice\n";
+        cout << "3. Prodaja rezervirane ulaznice\n";
+        cout << "4. Ispis podataka o prodanim ulaznicama\n";
+        cout << "5. Izvoz podataka u datoteku\n";
+        cout << "0. Izlaz iz programa\n";
+        cout << "Odaberite opciju: ";
+        cin >> izbor;
+
+        switch (izbor) {
+            case 1: ProdajaUlaznice(); break;
+            case 2: RezervacijaUlaznice(); break;
+            case 3: ProdajaRezervirane(); break;
+            case 4: IspisProdanih(); break;
+            case 5: IzvozPodataka(); break;
+            case 0: cout << "Izlaz iz programa." << endl; break;
+            default: cout << "Nepoznata opcija!" << endl;
+        }
+    } while (izbor != 0);
+}
+
+// --------- MAIN ---------
+int main() {
+    GlavniIzbornik(); // logika je izdvojena radi preglednosti i modularnosti
+    return 0;
+}

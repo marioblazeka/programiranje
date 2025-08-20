@@ -1,0 +1,2 @@
+sifra OIB ime_prezime bodovi 2KN
+1 2 mario b 2 1
