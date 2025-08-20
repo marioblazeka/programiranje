@@ -35,7 +35,7 @@ int main() {
 //	                cout<<sb<<endl;
 	           
 	    cout<<endl;
-	    cout<<"Znaci zelis igrati u rasponu od 0 do "<<raspon<<endl;
+	    cout<<"Znaci zelis igrati u  rasponu od 0 do "<<raspon<<endl;
 
 	    
        cout<<ime<<" ajde pogodi koji broj sam zamislio, brojim ti pokusaje"<<endl;
@@ -59,3 +59,4 @@ int main() {
    //system("pause");
     return 0;
 }
+
