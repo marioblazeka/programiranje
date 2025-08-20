@@ -1,0 +1,152 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+
+using namespace std;
+
+struct posudbaKnjiga{
+  int redBr;
+  int sifraKnji;
+  string imeKoris;
+  int brojDanPos;
+  float zakasnina;
+};
+
+posudbaKnjiga posudba[323];
+int unos = 0;
+bool zakasnina = false;
+
+void unosPodataka(){
+	int redBr=0;
+			unos++;
+	for(int i=0;i<unos;i++){
+
+		redBr++;
+	}
+  cout<<"Unesi sifru knjige\n";
+    cin>>posudba[unos].sifraKnji;
+      
+        cout<<"Unesite Ime\n";
+        
+		cin.ignore();
+        getline(cin, posudba[unos].imeKoris);
+
+        cout<<"Unesite broj dana posudbe\n";
+        cin>>posudba[unos].brojDanPos;
+    }    
+
+void ispravakPodataka(){
+
+  int trazeniBroj;
+
+  if(unos=0){
+  cout<<"Nema podataka za ispravak\n";
+  return;
+    }else{
+      cout<<"Do sada je uneseno "<<unos<<" evidencija\n";
+      }
+
+  cout<<"Unesi redni broj posudbe za ispravak\n";
+
+    cin>>trazeniBroj;
+      if(trazeniBroj==posudba[unos].sifraKnji){
+        cout<<"Unesite ispravak sifre knjige\n";
+        cin>>posudba[unos].sifraKnji;
+
+        cout<<"Unesite ispravak imena\n";
+        
+		cin.ignore();
+        getline(cin, posudba[unos].imeKoris);
+
+        cout<<"Unesite ispravak dana posudbe\n";
+        cin>>posudba[unos].brojDanPos;
+              }else{
+                return;}
+    }
+
+void pregledPodataka(){
+  if(unos=0){
+  cout<<"Nema podataka za pregled\n";
+  return;
+    }else{
+      cout<<"Do sada je uneseno "<<unos<<" evidencija\n";
+      }
+
+    }
+
+void vracanjeIzakasnina(){
+  if(unos=0){
+  cout<<"Nema knjiga za vracanje\n";
+  return;
+    }else{
+      cout<<"Do sada je uneseno "<<unos<<" evidencija\n";
+      }
+    }
+
+void izvozPodataka(){
+  if(unos=0){
+    cout<<"Nema podataka za izvoz\n";
+    return;
+    }
+
+    ofstream datoteka("knjizPodaci.txt");
+    if(!datoteka){
+    cout<<"Greska u otvaranju datoteke\n";	
+      }
+    datoteka<<"Trenutno je aktivno "<<unos<<" posudbi\n";
+    datoteka<<endl;
+    datoteka<<"Redni broj posudbe\tSifra knjige\tIme korisnika\tBroj dana posudbe\tZakasnina\n";
+    datoteka<<endl;
+    datoteka<<unos<<"\t"<<posudba[unos].sifraKnji<<"\t"<<posudba[unos].imeKoris<<"\t"<<posudba[unos].brojDanPos<<"\t"<<zakasnina<<"\n";
+
+    datoteka.close();
+  }
+
+//izbornik moze biti unutar main funkcije 
+
+void glavniIzbornik(){
+
+int izbornik;
+do{
+  cout<<"-----I Z B O R N I K-----\n";
+  cout<<"1. Unos podataka o posudbi\n";
+  cout<<"2. Ispravak podataka o posudbi\n";
+  cout<<"3. Pregled posuđenih knjiga\n";
+  cout<<"4. Vraćanje knjige i Naplata zakasnine\n";
+  cout<<"5. Izvoz podataka u datoteku\n";
+
+  cout<<"0. Izlaz iz programa\n";
+
+  cout<<"Odaberi izbor 1 do 5 ili 0 za izlaz iz programa\n";
+
+  cin>>izbornik;
+    if(izbornik >0||izbornik<6){
+    cout<<"Unjeli ste "<<izbornik<<" za ulaz u izbornik\n";
+    }else{
+      cout<<"Unjeli ste 0 za izlaz iz programa\n";
+      cout<<"*********************************\n";
+      return;
+      }
+  switch(izbornik){
+  case 1:unosPodataka(); break;
+  case 2:ispravakPodataka(); break;
+  case 3:pregledPodataka(); break;
+  case 4:vracanjeIzakasnina(); break;
+  case 5:izvozPodataka(); break;
+  case 0: break;
+  default:cout<<"Krivi unos\n";
+  }		
+}while(izbornik!=0);
+return;
+}
+
+//main funkcija
+
+int main(){
+  glavniIzbornik();
+
+ // system("pause");
+  return 0;
+  }
+
+
