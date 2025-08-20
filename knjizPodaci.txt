@@ -1,0 +1,5 @@
+Trenutno je aktivno 0 posudbi
+
+Redni broj posudbe	Sifra knjige	Ime korisnika	Broj dana posudbe	Zakasnina
+
+0	1	1	1	0
