@@ -1,0 +1,231 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+
+using nameapace std;
+
+struct evidProdUlaz(){
+int brUlaz;
+int brSjed;
+bool rezSjed;
+float cijeUlaz;
+struct oibGle; //oib nije cijeli broj jer moze poceti sa 0 ili nekoliko vodecih mjesta biti 0
+};
+
+evidProdUlaz evidencija[150];
+int unos = 0;
+int BrRac = 0;
+int brSjed = BrRac;
+float suma = 0;
+
+bool rezSje = false;
+	
+	if(brSjed>0||<=100){
+	cout<<"Odabrali ste sjedalo na parteru, cijena je 15 eura\n";
+		}
+		suma=brSjed*15;
+
+		if(brSjed>100||<=140){
+		cout<<"Odabrali ste sjedalo na terasi, cijena je 17,5 eura\n";
+			}
+			suma=brSjed*17,5;
+
+			if(brSjed>140||<=150){
+			cout<<"Odabrali ste sjedalo u vip lozi, cijena je 20 eura\n";
+				}
+				suma=brSjed*20;
+
+		
+		cout<<"Prodana je ulaznica "<<BrRac<<" sa sjedalom "<<brSjed<<endl;
+		return;
+
+void prodajaUlaznica(){
+	if(unos >=151){
+		cout<<"Predstava je rasprodana!\n";
+		}
+	cout<<"Upisi svoj oib\n";
+	cin>>evidencija[unos].oibGle;
+	
+		brSjed++;
+			return;
+}
+
+void rezervacijaUlaznica(){
+		if(unos=0){
+		cout<<"Nema podataka za rezervaciju\n";
+			return;
+			}
+	int izbor;
+	int trazeno;
+	if( trazeno == rezSje)
+		trazeno=true;
+	
+		cout<<"Odaberi opcije 1 ili 2 za ulazak u izbornik\n";
+			cout<<"1. Rezervacija numeriranog sjedala\n";
+			cout<<"2. Izmjena podataka o rezervaciji\n";
+			cin>>izbor;
+			if(izbor==1){
+				cout<<"Odaberi broj sjedala za rezervaciju\n;
+		cin>>trazeno;
+
+		if(trazeno==evidencija[unos].brSjed){
+				cout<<"Sjedalo s brojem "<<trazeno<<" je zauzeto\n";
+						}else{
+				cout<<"Sjedalo s brojem "<<trazeno<<" je slobodno\n";
+				
+				cout<<"Upisi svoj oib za rezervaciju sjedala s brojem <<trazeno<<"\n";						brSjed++;
+				cin>>evidencija[unos].oibGle;
+				cout<<"Rezervacija realizirana\n";
+				return;
+							}
+
+				}
+
+				if(izbor==2){
+				cout<<"Odaberi broj sjedala za izmjenu podataka o rezervaciji\n;
+		cin>>trazeno;
+
+		if(trazeno==evidencija[unos].brSjed){
+				cout<<"Sjedalo s brojem "<<trazeno<<" je rezervirano\n";
+		cout<<"Upisi novi oib za rezervaciju sjedala s brojem <<trazeno<<"\n";						brSjed++;
+				cin>>evidencija[unos].oibGle;
+
+						}else{
+				cout<<"Nema sjedalo s brojem "<<trazeno<<" za izmjenu\n";
+				
+				
+				cout<<"Rezervacija izmjenjena\n";
+				return;
+							}
+
+				}
+
+}
+
+void prodajaRezUlaznica(){
+			if(unos=0){
+		cout<<"Nema podataka za prodaju rezerviranih ulaznica\n";
+			return;
+			}
+
+		cout<<"Odaberi unese sjedalo za koje postoji rezervacija\n";
+			
+		cin>>trazeno;
+
+		if(trazeno==evidencija[unos].brSjed){
+				cout<<"Sjedalo s brojem "<<trazeno<<" je rezervirano\n";
+						}else{
+				cout<<"Rezervacija ne postoji za sjedalo "<<trazeno<< "\n";
+				
+				cout<<"Upisi svoj oib za prodaju sjedala s brojem <<trazeno<<"\n";						brSjed++;
+
+				cin>>evidencija[unos].oibGle;
+				cout<<"Prodana je ulaznica "<<brRac<<" sa sjedalom "<<brSjed<<"\n";
+					return;
+							}
+
+				}
+
+
+}	
+
+void ispisPodoUlaznicama(){
+			if(unos=0){
+		cout<<"Nema podataka za ispis podataka o prodanim ulaznicama\n";
+			return;
+			}
+cout<<"Do sada je prodano "<<unos<<" ulaznica<<endl;
+cout<<"Inkasirano je "<<suma<<" eura"<<endl;
+cout<<"Od sveukupno  "<<suma<<" inkasiranih eura"<<endl;
+
+float sumaP=0;
+float sumaT=0;
+float sumaV=0;
+float suma=sumaP+sumaT+sumaV;	
+
+//*************Parter, Terasa i VIP loza
+
+if(brSjed>0||<=100){
+	cout<<"Odabrali ste sjedalo na parteru, cijena je 15 eura\n";
+		}
+		sumaP=brSjed*15;
+		sumaP++;
+
+		if(brSjed>100||<=140){
+		cout<<"Odabrali ste sjedalo na terasi, cijena je 17,5 eura\n";
+			}
+			sumaT=brSjed*17,5;
+			sumaT++;
+
+			if(brSjed>140||<=150){
+			cout<<"Odabrali ste sjedalo u vip lozi, cijena je 20 eura\n";
+				}
+			sumV=brSjed*20;
+			suma++;
+
+int postotakP=unos%sumaP;
+int postotakT=unos%sumaT;
+int postotakV=unos%sumaV;
+
+			cout<<"Postotak rasprodanog partera je "<<postotakP<<" terase je "<<postotakT<<" a vip loze je " <<postotakV<<endl;	
+		return;
+}
+
+void izvozPodoUlaznicama(){
+			for(int i=0;i<unos;i++)
+				if(unos=0){
+		cout<<"Nema podataka za izvoz podataka u datoteku Izvoz.txt\n";
+			return;
+			}
+
+	ofstream datoteka("Izvoz.txt"){
+		if(!datoteka){
+			cout<<"Greska u datoteci\n";
+			return;
+			}
+		
+		datoteka<<"Br. ulaznice\t sjedalo\t cijena ulaznice\ OIB gledatelja\n";
+		datoteka<<"evidencija[i].brUlaz\t evidencija[i].brSjed\t evidencija[i].cijeUlaz\t evidencija[unos].oibGle\n";
+				}
+ 		datoteka.close();
+		cout<<"Izvoz podataka u datoteku realiziran!\";
+		return;
+}
+
+void glavniIzbornik(){
+	int izbor;
+	
+	do{
+	cout<<"-----IZBORNIK-----\n";
+	cout<<"1. Prodaja ulaznice \n";
+	cout<<"2. Rezervacija ulaznice (sjedala)\n";
+	cout<<"3. Prodaja rezervirane ulaznice\n";
+	cout<<"4. Ispis podataka o prodanim ulaznicama\n";
+	cout<<"5. Izvoz podataka u datoteku\n";
+
+	cout<<"0. Izlaz iz programa!\n";
+
+		cin>>izbor;
+		if(izbor >0||<6){
+		cout"Unjeli ste "<<unos<<" iz izbornika\n";
+			}
+
+	switch(izbor){
+		case 1: prodajaUlaznica();break;
+		case 2: rezervacijaUlaznica()break;
+		case 3: prodajaRezUlaznica(); break;
+		case 4: ispisPodoUlaznicama(); break;
+		case 5: izvozPodoUlaznicama(); break;
+	
+	default: cout<<"Pogresan unos\n"; break; 
+		}
+	}while(izbor!=0)
+}
+
+int main(){
+	glavniIzbornik();
+	
+	system"(pause");
+	return 0;
+
+}
